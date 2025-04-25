@@ -10,7 +10,6 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
 import io.restassured.response.Response;
-import lombok.extern.log4j.Log4j;
 import lombok.extern.log4j.Log4j2;
 import org.junit.Assert;
 
@@ -48,8 +47,8 @@ public class TodosTests {
         usersWithTodosFromFancode = usersWithTodos.stream().filter(this::isUserFromFancode).collect(Collectors.toList());
     }
 
-    @Then("^User Completed task percentage should be greater than 50%$")
-    public void userCompletedTaskPercentageShouldBeGreaterThan50Percent(){
+    @Then("^User Completed task percentage should be greater than (.*)$")
+    public void userCompletedTaskPercentageShouldBeGreaterThan(String percent){
         for (Integer userId : usersWithTodosFromFancode) {
             Predicate<Todo> userMatch = todos -> todos.getUserId()==userId;
             long totalTasks = Arrays.stream(todosResponses).filter(userMatch).count();
@@ -57,7 +56,8 @@ public class TodosTests {
             double percentage = ((double) completedTasks / totalTasks) * 100;
             Logger.getAnonymousLogger().info("User : " + userId + " has " + totalTasks + " total tasks and " + completedTasks + " completed tasks which is " + percentage + "%");
 
-            Assert.assertTrue(percentage > 50);
+            int expectedPercent = Integer.parseInt(percent.substring(0,percent.length()-1));
+            Assert.assertTrue(expectedPercent > 50);
         }
     }
 
