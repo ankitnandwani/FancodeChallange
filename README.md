@@ -10,7 +10,7 @@ This is cucumber java project done as part of Fancode interview process.
 git clone https://github.com/ankitnandwani/FancodeChallange.git
 ```
 ```
-mvn verify 
+mvn test 
 ```
 
 
